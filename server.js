@@ -1,0 +1,13 @@
+const controller = require('./controller');
+
+module.exports = function() {
+  this.bindHook('add_router', function(addRouter) {
+    addRouter({
+      // 获取doc信息
+      controller: controller,
+      method: 'get',
+      path: 'doc',
+      action: 'getDoc'
+    });
+  });
+};
