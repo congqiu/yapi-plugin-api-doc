@@ -1,7 +1,6 @@
 const baseController = require('controllers/base.js');
 const interfaceModel = require('models/interface.js');
 const projectModel = require('models/project.js');
-// const wikiModel = require('../yapi-plugin-wiki/wikiModel.js');
 const interfaceCatModel = require('models/interfaceCat.js');
 const yapi = require('yapi.js');
 const markdownIt = require('markdown-it');
@@ -67,10 +66,24 @@ class exportController extends baseController {
     return data;
   }
 
-  async getDoc(ctx) {
+  /**
+   * 获取开放接口的文档
+   * @param {*} ctx 
+   */
+  async getOpenDoc(ctx) {
+    await this.getDoc(ctx, 'open');
+  }
+
+  /**
+   * 获取项目的文档
+   * @param {请求} ctx 
+   * @param {接口类型} status 
+   */
+  async getDoc(ctx, status) {
     let pid = ctx.request.query.pid;
-    let status = ctx.request.query.status;
     let isWiki = ctx.request.query.isWiki;
+
+    status = status || ctx.request.query.status;
 
     if (!pid) {
       ctx.body = yapi.commons.resReturn(null, 200, 'pid 不为空');
@@ -101,11 +114,8 @@ class exportController extends baseController {
         markerPattern: /^\[toc\]/im
       });
 
-      // require('fs').writeFileSync('./a.markdown', md);
       let tp = unescape(markdown.render(md));
-      // require('fs').writeFileSync('./a.html', tp);
       let left;
-      // console.log('tp',tp);
       let content = tp.replace(
         /<div\s+?class="table-of-contents"\s*>[\s\S]*?<\/ul>\s*<\/div>/gi,
         function(match) {

@@ -9,5 +9,13 @@ module.exports = function() {
       path: 'doc',
       action: 'getDoc'
     });
+    addRouter({
+      // 获取doc信息
+      controller: controller,
+      prefix: "/public",
+      method: 'get',
+      path: 'doc',
+      action: 'getOpenDoc'
+    });
   });
 };
