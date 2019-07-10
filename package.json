@@ -1,0 +1,20 @@
+{
+  "name": "yapi-plugin-api-doc",
+  "version": "0.0.2",
+  "description": "在标签页中加入查看接口文档",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/congqiu/yapi-plugin-api-doc.git"
+  },
+  "author": "congqiu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/congqiu/yapi-plugin-api-doc/issues"
+  },
+  "homepage": "https://github.com/congqiu/yapi-plugin-api-doc#readme"
+}
