@@ -16,6 +16,7 @@ blockquote {
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
     width: 6px;
+    height: 6px;
 }
 /* 外层轨道 */
 ::-webkit-scrollbar-track {
@@ -230,10 +231,13 @@ body {
 }
 
 .table-of-contents>ul>li>a {
-  font-size: 20px;
-  margin-bottom: 16px;
-  margin-top: 16px;
-}
+    font-size: 20px;
+    margin-bottom: 16px;
+    margin-top: 16px;
+  }
+  .table-of-contents>ul>li>ul>li>a {
+    font-size: 18px;
+  }
 
 .table-of-contents ul {
     // position: fixed;

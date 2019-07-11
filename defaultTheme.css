@@ -18,6 +18,7 @@ blockquote {
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 /* 外层轨道 */
@@ -110,13 +111,15 @@ h3 {
   font-weight: 400;
   margin-top: 20px;
   margin-bottom: 20px;
-  border-left: 3px solid #59d69d;
+  border-bottom: 3px solid #59d69d;
   padding-left: 8px;
   font-size: 18px;
 }
 
 h4 {
   font-size: 16px;
+  padding-left: 8px;
+  border-left: 3px solid #59d69d;
 }
 
 h5 {
@@ -238,6 +241,25 @@ body {
   margin-top: 16px;
 }
 
+.table-of-contents>ul>li>ul>li>a {
+  font-size: 18px;
+}
+.table-of-contents>ul>li>ul>li>a:before {
+  content: "+";
+}
+.table-of-contents>ul>li>ul>li.open>a:before {
+  content: "-";
+}
+.table-of-contents>ul>li>ul>li>ul {
+  display: none;
+}
+.table-of-contents>ul>li>ul>li.open>ul {
+  display: block;
+}
+.table-of-contents>ul>li>ul>li>ul>li>a.active {
+  color: #59d69d;
+}
+
 .table-of-contents ul {
   overflow: auto;
   margin: 0px;
@@ -348,3 +370,18 @@ body > pre {
 }
 
 /*# sourceMappingURL=defaultTheme.css.map */
+
+.m-card .ui-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0.24rem);
+  font-size: 50px;
+  color: #fff;
+  background-color: #2395f1;
+  line-height: 100px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}

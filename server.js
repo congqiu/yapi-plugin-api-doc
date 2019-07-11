@@ -17,5 +17,13 @@ module.exports = function() {
       path: 'doc',
       action: 'getOpenDoc'
     });
+    addRouter({
+      // 获取doc信息
+      controller: controller,
+      prefix: "/public",
+      method: 'get',
+      path: 'document',
+      action: 'getDocument'
+    });
   });
 };
