@@ -88,7 +88,7 @@ class exportController extends baseController {
       let projects = [];
       for (let i = 0, item, list; i < result.length; i++) {
         item = result[i].toObject();
-        list = await this.handleListClass(item._id);
+        list = await this.handleListClass(item._id, "open");
         if (list.length > 0) {
           projects.push({
             item,
@@ -110,7 +110,6 @@ class exportController extends baseController {
         <head>
           <title>在线文档</title>
           <meta charset="utf-8" />
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/antd/3.20.1/antd.min.css">
           ${defaultTheme}
         </head>
         <body>
@@ -154,7 +153,9 @@ class exportController extends baseController {
       </head>
       <body>
         <div class="g-doc">
+          <div id="left">
           ${left}
+          </div>
           <div id="right" class="content-right">
           ${tp}
           </div>

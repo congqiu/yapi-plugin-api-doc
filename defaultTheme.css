@@ -225,7 +225,7 @@ body {
   height: 100%;
 }
 
-.table-of-contents {
+.table-of-contents, #left {
   position: fixed;
   top: 16px;
   left: 0;
@@ -241,22 +241,22 @@ body {
   margin-top: 16px;
 }
 
-.table-of-contents>ul>li>ul>li>a {
+#left .table-of-contents>ul>li>ul>li>a {
   font-size: 18px;
 }
-.table-of-contents>ul>li>ul>li>a:before {
+#left .table-of-contents>ul>li>ul>li>a:before {
   content: "+";
 }
-.table-of-contents>ul>li>ul>li.open>a:before {
+#left .table-of-contents>ul>li>ul>li.open>a:before {
   content: "-";
 }
-.table-of-contents>ul>li>ul>li>ul {
+#left .table-of-contents>ul>li>ul>li>ul {
   display: none;
 }
-.table-of-contents>ul>li>ul>li.open>ul {
+#left .table-of-contents>ul>li>ul>li.open>ul {
   display: block;
 }
-.table-of-contents>ul>li>ul>li>ul>li>a.active {
+#left .table-of-contents>ul>li>ul>li>ul>li>a.active {
   color: #59d69d;
 }
 
