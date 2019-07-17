@@ -85,7 +85,7 @@ class exportController extends baseController {
       }
 
       try {
-        const wikiModel = require('../yapi-plugin-wiki/wikiModel.js');
+        const wikiModel = require('../../exts/yapi-plugin-wiki/wikiModel.js');
         wikInst = await yapi.getInst(wikiModel);
       } catch (error) {
       }
@@ -235,7 +235,7 @@ class exportController extends baseController {
       curProject = await this.projectModel.get(pid);
 
       try {
-        const wikiModel = require('../yapi-plugin-wiki/wikiModel.js');
+        const wikiModel = require('../../exts/yapi-plugin-wiki/wikiModel.js');
         wikiData = await yapi.getInst(wikiModel).get(pid);
       } catch (error) {
       }
