@@ -1,6 +1,6 @@
 {
   "name": "yapi-plugin-api-doc",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "在标签页中加入查看接口文档",
   "main": "index.js",
   "scripts": {

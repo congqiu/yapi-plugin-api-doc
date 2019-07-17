@@ -75,7 +75,7 @@ class exportController extends baseController {
     let group_id = ctx.params.group;
 
     let groupData = await this.groupModel.get(group_id);
-    let tp = '';
+    let tp = '', wikInst = null;
     try {
       let htmlBody = '';
 
@@ -83,13 +83,23 @@ class exportController extends baseController {
         htmlBody = '404 找不到对应的文档'
         return renderHtml(htmlBody);
       }
+
+      try {
+        const wikiModel = require('../yapi-plugin-wiki/wikiModel.js');
+        wikInst = await yapi.getInst(wikiModel);
+      } catch (error) {
+      }
       
       let result = await this.projectModel.list(group_id);
-      let projects = [];
+      let projects = [], wikiDatas = [];
+      
       for (let i = 0, item, list; i < result.length; i++) {
         item = result[i].toObject();
         list = await this.handleListClass(item._id, "open");
         if (list.length > 0) {
+          if (wikInst) {
+            wikiDatas.push(await wikInst.get(item._id));
+          }
           projects.push({
             item,
             list
@@ -97,7 +107,7 @@ class exportController extends baseController {
         }
       }
 
-      tp = await createHtml.bind(this)(projects);
+      tp = await createHtml.bind(this)(projects, wikiDatas);
       return (ctx.body = tp);
     } catch (error) {
       ctx.body = yapi.commons.resReturn(null, 502, '获取文档出错');
@@ -120,8 +130,8 @@ class exportController extends baseController {
       return (ctx.body = html);
     }
 
-    async function createHtml(projects) {
-      let md = await createMarkdown.bind(this)(projects, true);
+    async function createHtml(projects, wikiDatas) {
+      let md = await createMarkdown.bind(this)(projects, wikiDatas);
       let markdown = markdownIt({ html: true, breaks: true });
       markdown.use(markdownItAnchor); // Optional, but makes sense as you really want to link to something
       markdown.use(markdownItTableOfContents, {
@@ -177,7 +187,7 @@ class exportController extends baseController {
       return html;
     }
 
-    function createMarkdown(projects, isToc) {
+    function createMarkdown(projects, wikiDatas) {
       //拼接markdown
       //模板
       let mdTemplate = ``;
@@ -186,9 +196,9 @@ class exportController extends baseController {
         mdTemplate += md.createGroupMarkdown(groupData);
         for (let index = 0; index < projects.length; index++) {
           const project = projects[index];
-          mdTemplate += md.createProjectMarkdown(project.item);
+          mdTemplate += md.createProjectMarkdown(project.item, wikiDatas[index]);
           // 分类信息
-          mdTemplate += md.createClassMarkdown(groupData, project.list, isToc);
+          mdTemplate += md.createClassMarkdown(groupData, project.list, true);
         }
         return mdTemplate;
       } catch (e) {
@@ -213,7 +223,6 @@ class exportController extends baseController {
    */
   async getDoc(ctx, status) {
     let pid = ctx.request.query.pid;
-    let isWiki = ctx.request.query.isWiki;
 
     status = status || ctx.request.query.status;
 
@@ -224,10 +233,13 @@ class exportController extends baseController {
     let tp = '';
     try {
       curProject = await this.projectModel.get(pid);
-      if (isWiki === 'true') {
+
+      try {
         const wikiModel = require('../yapi-plugin-wiki/wikiModel.js');
         wikiData = await yapi.getInst(wikiModel).get(pid);
+      } catch (error) {
       }
+
       ctx.set('Content-Type', 'text/html');
       const list = await this.handleListClass(pid, status);
 
