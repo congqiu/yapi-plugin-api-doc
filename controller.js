@@ -198,7 +198,7 @@ class exportController extends baseController {
           const project = projects[index];
           mdTemplate += md.createProjectMarkdown(project.item, wikiDatas[index]);
           // 分类信息
-          mdTemplate += md.createClassMarkdown(groupData, project.list, true);
+          mdTemplate += md.createClassMarkdown(project.item, project.list, true);
         }
         return mdTemplate;
       } catch (e) {
