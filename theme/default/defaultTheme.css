@@ -227,7 +227,7 @@ body {
 
 .table-of-contents, #left {
   position: fixed;
-  top: 16px;
+  top: 40px;
   left: 0;
   bottom: 0;
   overflow-x: hidden;
@@ -314,7 +314,7 @@ body > pre {
 }
 
 .g-doc {
-  padding-top: 24px;
+  padding-top: 50px;
   display: flex;
 }
 
@@ -384,4 +384,37 @@ body > pre {
   background-color: #2395f1;
   line-height: 100px;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.header-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #32363a;
+}
+.header-box .breadcrumb {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 0 0 20px;
+  padding: 0;
+  color: rgba(0,0,0,0.65);
+  font-variant: tabular-nums;
+  line-height: 40px;
+  list-style: none;
+  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum';
+  color: rgba(0,0,0,0.45);
+  font-size: 16px;
+}
+.header-box .breadcrumb span {
+  color: #fff;
+  padding-right: 10px;
+}
+.header-box .breadcrumb span a {
+  color: #fff;
+  padding-right: 10px;
+}
+.header-box .breadcrumb span a:hover {
+  color: #2395f1;
 }

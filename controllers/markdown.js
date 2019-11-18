@@ -1,4 +1,4 @@
-const schema = require('../../common/shema-transformTo-table.js');
+const schema = require('../../../common/shema-transformTo-table.js');
 const _ = require('underscore');
 
 const json_parse = function(json) {

@@ -3,20 +3,22 @@ const interfaceModel = require('models/interface.js');
 const projectModel = require('models/project.js');
 const groupModel = require('models/group.js');
 const interfaceCatModel = require('models/interfaceCat.js');
+const settingModel = require('../models/document');
 const yapi = require('yapi.js');
 const markdownIt = require('markdown-it');
 const markdownItAnchor = require('markdown-it-anchor');
 const markdownItTableOfContents = require('markdown-it-table-of-contents');
-const defaultTheme = require('./defaultTheme.js');
+const defaultTheme = require('../theme/default/defaultTheme.js');
 const md = require('./markdown');
 
-class exportController extends baseController {
+class fineDocController extends baseController {
   constructor(ctx) {
     super(ctx);
     this.catModel = yapi.getInst(interfaceCatModel);
     this.interModel = yapi.getInst(interfaceModel);
     this.projectModel = yapi.getInst(projectModel);
     this.groupModel = yapi.getInst(groupModel);
+    this.settingModel = yapi.getInst(settingModel);
   }
 
   async handleListClass(pid, status) {
@@ -69,6 +71,7 @@ class exportController extends baseController {
 
   /**
    * 获取开放文档列表
+   * 数据量太大，暂停使用
    * @param {*} ctx 
    */
   async getDocument(ctx) {
@@ -85,7 +88,7 @@ class exportController extends baseController {
       }
 
       try {
-        const wikiModel = require('../../exts/yapi-plugin-wiki/wikiModel.js');
+        const wikiModel = require('../../yapi-plugin-wiki/wikiModel.js');
         wikInst = await yapi.getInst(wikiModel);
       } catch (error) {
       }
@@ -95,15 +98,18 @@ class exportController extends baseController {
       
       for (let i = 0, item, list; i < result.length; i++) {
         item = result[i].toObject();
-        list = await this.handleListClass(item._id, "open");
-        if (list.length > 0) {
-          if (wikInst) {
-            wikiDatas.push(await wikInst.get(item._id));
+        let docSetting = await this.settingModel.findByProject(item._id);
+        if (docSetting && docSetting.is_public) {
+          list = await this.handleListClass(item._id, "open");
+          if (list.length > 0) {
+            if (wikInst) {
+              wikiDatas.push(await wikInst.get(item._id));
+            }
+            projects.push({
+              item,
+              list
+            });
           }
-          projects.push({
-            item,
-            list
-          });
         }
       }
 
@@ -213,7 +219,20 @@ class exportController extends baseController {
    * @param {*} ctx 
    */
   async getOpenDoc(ctx) {
-    await this.getDoc(ctx, 'open');
+    try {
+      let pid = ctx.request.query.pid;
+      if (!pid) {
+        ctx.body = yapi.commons.resReturn(null, 200, 'pid 不为空');
+      }
+      let docSetting = await this.settingModel.findByProject(pid);
+      if (docSetting && docSetting.is_public) {
+        await this.getDoc(ctx, 'open');
+      } else {
+        ctx.body = yapi.commons.resReturn(null, 502, '获取文档出错');
+      }
+    } catch (error) {
+      ctx.body = yapi.commons.resReturn(null, 502, '获取文档出错');
+    }
   }
 
   /**
@@ -235,7 +254,7 @@ class exportController extends baseController {
       curProject = await this.projectModel.get(pid);
 
       try {
-        const wikiModel = require('../../exts/yapi-plugin-wiki/wikiModel.js');
+        const wikiModel = require('../../yapi-plugin-wiki/wikiModel.js');
         wikiData = await yapi.getInst(wikiModel).get(pid);
       } catch (error) {
       }
@@ -282,6 +301,11 @@ class exportController extends baseController {
       ${defaultTheme}
       </head>
       <body>
+        <div class="header-box" style="display: ${status === 'open' ? '' : 'none'}">
+          <div class="breadcrumb">
+            <span><a href="/api/public/plugin/documents">首页</a>/</span><span>${curProject.name}</span>
+          </div>
+        </div>
         <div class="g-doc">
           ${left}
           <div id="right" class="content-right">
@@ -312,4 +336,4 @@ class exportController extends baseController {
   }
 }
 
-module.exports = exportController;
+module.exports = fineDocController;
