@@ -2,6 +2,7 @@ const baseController = require('controllers/base.js');
 const projectModel = require('models/project.js');
 const groupModel = require('models/group.js');
 const settingModel = require('../models/document');
+const docGroupModel = require('../models/group');
 const yapi = require('yapi.js');
 const homeTheme = require('../theme/home/home.js');
 
@@ -11,6 +12,7 @@ class homeController extends baseController {
     this.projectModel = yapi.getInst(projectModel);
     this.groupModel = yapi.getInst(groupModel);
     this.settingModel = yapi.getInst(settingModel);
+    this.docGroupModel = yapi.getInst(docGroupModel);
   }
 
   async index(ctx) {
@@ -26,33 +28,7 @@ class homeController extends baseController {
 			purple: '#7265e6'
 		};
 		try {
-			let groups = await this.groupModel.list();
-			let datas = [];
-			for (let j = 0; j < groups.length; j++) {
-				const group = groups[j];
-				let data = {
-					group_name: group.group_name,
-					group_desc: group.group_desc,
-					projects: []
-				};
-				let projects = await this.projectModel.list(group._id);
-				for (let i = 0; i < projects.length; i++) {
-					const project = projects[i];
-					let docSetting = await this.settingModel.findByProject(project._id);
-					if(docSetting && docSetting.is_public) {
-						data.projects.push({
-							name: project.name,
-							desc: project.desc,
-							icon: project.icon,
-							color: project.color,
-							path: project._id
-						});
-					}
-				}
-				if (data.projects.length > 0) {
-					datas.push(data)
-				}
-			}
+			let datas = await this.getAllProjects();
 			
 			let htmlBody = "";
 			for (let i = 0; i < datas.length; i++) {
@@ -67,7 +43,7 @@ class homeController extends baseController {
 				for (let j = 0; j < data.projects.length; j++) {
 					const project = data.projects[j];
 					htmlBody += `<div class="ant-col-xs-6 ant-col-lg-5 ant-col-xxl-3">
-						<a class="card-container" href="/api/public/plugin/doc?pid=${project.path}">
+						<a class="card-container" href="/api/public/plugin/doc?pid=${project._id}">
 							<div class="ant-card m-card">
 								<div class="ant-card-body">
 									<i class="anticon anticon-${project.icon} ui-logo" style="background-color: ${PROJECT_COLOR[project.color] || PROJECT_COLOR.blue};"></i>
@@ -99,6 +75,66 @@ class homeController extends baseController {
 			ctx.body = html;
 		} catch (error) {
       ctx.body = yapi.commons.resReturn(null, 502, '获取文档出错，请联系管理员');
+		}
+	}
+
+	async get(ctx) {
+		try {
+			ctx.body = yapi.commons.resReturn(await this.getAllProjects());
+		} catch (error) {
+			ctx.body = yapi.commons.resReturn(null, 502, '获取项目出错');
+		}
+	}
+
+	async getAllProjects() {
+		try {
+			let groups = await this.groupModel.list();
+			let docGroups = await this.docGroupModel.listAll() || [];
+			let groupIndexs = {};
+			for (let i = 0; i < docGroups.length; i++) {
+				let docGroup = docGroups[i];
+				groupIndexs[docGroup.group_id] = docGroup;
+			}
+			let datas = [];
+			for (let j = 0; j < groups.length; j++) {
+				const group = groups[j];
+				let docGroup = groupIndexs[group._id] || {};
+				if (docGroup.is_public === false) {
+					continue;
+				}
+				
+				let data = {
+					_id: group._id,
+					group_name: group.group_name,
+					group_desc: group.group_desc,
+					index: docGroup.index || 0,
+					projects: []
+				};
+				let projects = await this.projectModel.list(group._id);
+				for (let i = 0; i < projects.length; i++) {
+					const project = projects[i];
+					let docSetting = await this.settingModel.findByProject(project._id);
+					if(docSetting && docSetting.is_public) {
+						data.projects.push({
+							_id: project._id,
+							name: project.name,
+							desc: project.desc,
+							icon: project.icon,
+							color: project.color,
+							index: docSetting.index
+						});
+					}
+				}
+				if (data.projects.length > 0) {
+					data.projects.sort((a, b) => a.index - b.index);
+					datas.push(data)
+				}
+			}
+			datas.sort((a, b) => a.index - b.index);
+			return datas;
+		} catch (error) {
+			yapi.commons.log(error.message);
+      return [];
 		}
 	}
 }

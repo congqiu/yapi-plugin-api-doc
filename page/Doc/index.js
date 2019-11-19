@@ -19,7 +19,7 @@ const formItemLayout = {
   className: "form-item"
 };
 
-export default class DocPage extends Component {
+export default class FineDocPage extends Component {
   constructor(props) {
     super(props);
     this.state = {

@@ -1,6 +1,7 @@
 const controller = require('./controllers/doc');
 const settingController = require('./controllers/setting');
 const docController = require('./controllers/home');
+const docGroupController = require('./controllers/group');
 
 module.exports = function() {
   this.bindHook('add_router', function(addRouter) {
@@ -16,6 +17,13 @@ module.exports = function() {
       path: 'fine/document/setting/save',
       action: 'saveSetting'
     });
+    addRouter({
+      controller: settingController,
+      method: 'post',
+      path: 'fine/document/up_index',
+      action: 'upIndex'
+    });
+
     addRouter({
       // 获取doc信息
       controller: controller,
@@ -39,6 +47,7 @@ module.exports = function() {
       path: 'document',
       action: 'getDocument'
     });
+    
     addRouter({
       // 获取home
       controller: docController,
@@ -46,6 +55,19 @@ module.exports = function() {
       method: 'get',
       path: 'documents',
       action: 'index'
+    });
+    addRouter({
+      controller: docController,
+      method: 'get',
+      path: 'fine/document',
+      action: 'get'
+    });
+
+    addRouter({
+      controller: docGroupController,
+      method: 'post',
+      path: 'fine/document/group/up_index',
+      action: 'upIndex'
     });
   });
 };

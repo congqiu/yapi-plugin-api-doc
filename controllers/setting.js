@@ -48,6 +48,28 @@ class settingController extends baseController {
       ctx.body = yapi.commons.resReturn(null, 401, e.message);
     }
   }
+
+  async upIndex(ctx) {
+    try {
+      let params = ctx.request.body;
+      if (!params || !Array.isArray(params)) {
+        ctx.body = yapi.commons.resReturn(null, 400, '请求参数必须是数组');
+      }
+      params.forEach(item => {
+        if (item.id) {
+          this.settingModel.findOneAndUpdate(item.id, {index: item.index}).then(
+            res => {},
+            err => {
+              yapi.commons.log(err.message, 'error');
+            }
+          );
+        }
+      });
+      return (ctx.body = yapi.commons.resReturn('成功！'));
+    } catch (e) {
+      ctx.body = yapi.commons.resReturn(null, 400, e.message);
+    }
+  }
 }
 
 module.exports = settingController;
