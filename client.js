@@ -12,15 +12,15 @@ module.exports = function() {
 
   this.bindHook('header_menu', function (menu) {
     menu.fineDocSettingPage = {
-      path: '/document',
+      path: '/document/api',
       name: '接口文档',
-      icon: 'bar-chart',
+      icon: 'file-text',
       adminFlag: true
     }
   })
   this.bindHook('app_route', function (app) {
     app.fineDocSettingPage = {
-      path: '/document',
+      path: '/document/api',
       component: FineDocSettingPage
     }
   })

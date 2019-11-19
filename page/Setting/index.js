@@ -1,19 +1,38 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import axios from 'axios';
-import { Layout, Tooltip, Icon, Row, Tree} from "antd";
+import PropTypes from 'prop-types';
+import { Layout, Tooltip, Card, Icon, Row, Tree} from "antd";
 const TreeNode = Tree.TreeNode;
 const { Content, Sider } = Layout;
 import { arrayChangeIndex } from 'client/common.js';
+import { setBreadcrumb } from 'client/reducer/modules/user';
+
+import constants from 'client/constants/variable.js';
 
 import './index.scss';
 
+@connect(
+  null,
+  {
+    setBreadcrumb
+  }
+)
 export default class FineDocSettingPage extends Component {
+  static propTypes = {
+    setBreadcrumb: PropTypes.func
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       projectData: [],
       expands: null
     };
+  }
+
+  async componentWillMount() {
+    this.props.setBreadcrumb([{ name: '接口文档' }]);
   }
 
   async componentDidMount() {
@@ -95,6 +114,14 @@ export default class FineDocSettingPage extends Component {
             <div
               className="container-title"
             >
+              <Icon
+                type={item.icon || 'star-o'}
+                className="project-logo"
+                style={{
+                  marginRight: 5,
+                  backgroundColor: constants.PROJECT_COLOR[item.color] || constants.PROJECT_COLOR.blue
+                }}
+              />
               {item.name}
             </div>
           }
@@ -121,7 +148,6 @@ export default class FineDocSettingPage extends Component {
                 className="draggable-tree"
                 draggable
                 blockNode
-                onDragEnter={this.onDragEnter}
                 onDrop={this.onDrop}
               >
                 {projectData.map(item => {
@@ -131,6 +157,7 @@ export default class FineDocSettingPage extends Component {
                         <div
                           className="container-title"
                         >
+                          <Icon type="folder" style={{ marginRight: 5 }} />
                           {item.group_name}
                         </div>
                       }
@@ -149,6 +176,19 @@ export default class FineDocSettingPage extends Component {
                         padding: 24,
                         textAlign: "center"
                       }}>
+              <Card title="接口文档地址">
+                <Card title="内部接口文档地址" type="inner">
+                  <a target="_blank" href={"/api/plugin/documents"}>
+                    {`${window.location.origin}/api/plugin/documents`}
+                  </a>
+                </Card>
+               
+                <Card title="无需登录文档地址" type="inner" style={{ marginTop: 16 }}>
+                  <a target="_blank" href={"/api/public/plugin/documents"}>
+                    {`${window.location.origin}/api/public/plugin/documents`}
+                  </a>
+                </Card>
+              </Card>
             </Content>
           </Layout>
         </Layout>

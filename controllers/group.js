@@ -11,6 +11,11 @@ class docGroupController extends baseController {
 	async upIndex(ctx) {
     try {
       let params = ctx.request.body;
+      
+      if (this.getRole() != 'admin') {
+        return (ctx.body = yapi.commons.resReturn(null, 405, '没有权限'));
+      }
+
       if (!params || !Array.isArray(params)) {
         ctx.body = yapi.commons.resReturn(null, 400, '请求参数必须是数组');
       }

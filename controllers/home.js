@@ -80,6 +80,11 @@ class homeController extends baseController {
 
 	async get(ctx) {
 		try {
+			console.log(this.getRole())
+			if (this.getRole() != 'admin') {
+				return (ctx.body = yapi.commons.resReturn(null, 405, '没有权限'));
+			}
+			
 			ctx.body = yapi.commons.resReturn(await this.getAllProjects());
 		} catch (error) {
 			ctx.body = yapi.commons.resReturn(null, 502, '获取项目出错');
@@ -102,7 +107,7 @@ class homeController extends baseController {
 				if (docGroup.is_public === false) {
 					continue;
 				}
-				
+
 				let data = {
 					_id: group._id,
 					group_name: group.group_name,

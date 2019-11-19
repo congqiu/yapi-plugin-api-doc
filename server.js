@@ -55,6 +55,13 @@ module.exports = function() {
       method: 'get',
       path: 'documents',
       action: 'index'
+    }); 
+    addRouter({
+      // 获取home
+      controller: docController,
+      method: 'get',
+      path: 'documents',
+      action: 'index'
     });
     addRouter({
       controller: docController,
