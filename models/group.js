@@ -1,7 +1,7 @@
 const yapi = require('yapi.js');
 const baseModel = require('models/base.js');
 
-class documentModel extends baseModel {
+class groupDocModel extends baseModel {
   getName() {
     return 'fine_api_document_group';
   }
@@ -9,7 +9,7 @@ class documentModel extends baseModel {
   getSchema() {
     return {
       uid: Number,
-      // 项目id
+      // 分组id
       group_id: {
         type: Number,
         required: true
@@ -75,4 +75,4 @@ class documentModel extends baseModel {
   }
 }
 
-module.exports = documentModel;
+module.exports = groupDocModel;

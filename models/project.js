@@ -1,9 +1,9 @@
 const yapi = require('yapi.js');
 const baseModel = require('models/base.js');
 
-class documentModel extends baseModel {
+class projectDocModel extends baseModel {
   getName() {
-    return 'fine_api_document';
+    return 'fine_api_document_project';
   }
 
   getSchema() {
@@ -91,4 +91,4 @@ class documentModel extends baseModel {
   }
 }
 
-module.exports = documentModel;
+module.exports = projectDocModel;
