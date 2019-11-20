@@ -18,6 +18,7 @@ blockquote {
 /* 设置滚动条的样式 */
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 /* 外层轨道 */
@@ -110,13 +111,15 @@ h3 {
   font-weight: 400;
   margin-top: 20px;
   margin-bottom: 20px;
-  border-left: 3px solid #59d69d;
+  border-bottom: 3px solid #59d69d;
   padding-left: 8px;
   font-size: 18px;
 }
 
 h4 {
   font-size: 16px;
+  padding-left: 8px;
+  border-left: 3px solid #59d69d;
 }
 
 h5 {
@@ -222,9 +225,9 @@ body {
   height: 100%;
 }
 
-.table-of-contents {
+.table-of-contents, #left {
   position: fixed;
-  top: 16px;
+  top: 40px;
   left: 0;
   bottom: 0;
   overflow-x: hidden;
@@ -236,6 +239,25 @@ body {
   font-size: 20px;
   margin-bottom: 16px;
   margin-top: 16px;
+}
+
+#left .table-of-contents>ul>li>ul>li>a {
+  font-size: 18px;
+}
+#left .table-of-contents>ul>li>ul>li>a:before {
+  content: "+";
+}
+#left .table-of-contents>ul>li>ul>li.open>a:before {
+  content: "-";
+}
+#left .table-of-contents>ul>li>ul>li>ul {
+  display: none;
+}
+#left .table-of-contents>ul>li>ul>li.open>ul {
+  display: block;
+}
+#left .table-of-contents>ul>li>ul>li>ul>li>a.active {
+  color: #59d69d;
 }
 
 .table-of-contents ul {
@@ -292,7 +314,7 @@ body > pre {
 }
 
 .g-doc {
-  padding-top: 24px;
+  padding-top: 50px;
   display: flex;
 }
 
@@ -348,3 +370,51 @@ body > pre {
 }
 
 /*# sourceMappingURL=defaultTheme.css.map */
+
+.m-card .ui-logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, 0.24rem);
+  font-size: 50px;
+  color: #fff;
+  background-color: #2395f1;
+  line-height: 100px;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.header-box {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: #32363a;
+}
+.header-box .breadcrumb {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 0 0 20px;
+  padding: 0;
+  color: rgba(0,0,0,0.65);
+  font-variant: tabular-nums;
+  line-height: 40px;
+  list-style: none;
+  -webkit-font-feature-settings: 'tnum';
+  font-feature-settings: 'tnum';
+  color: rgba(0,0,0,0.45);
+  font-size: 16px;
+}
+.header-box .breadcrumb span {
+  color: #fff;
+  padding-right: 10px;
+}
+.header-box .breadcrumb span a {
+  color: #fff;
+  padding-right: 10px;
+}
+.header-box .breadcrumb span a:hover {
+  color: #2395f1;
+}
