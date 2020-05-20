@@ -1,9 +1,13 @@
 {
   "name": "yapi-plugin-api-doc",
-  "version": "0.1.0",
-  "description": "在标签页中加入查看接口文档",
+  "version": "0.2.0",
+  "description": "在标签页中加入查看接口文档，在线查看接口文档",
   "main": "index.js",
-  "keywords": ["yapi", "doc", "api"],
+  "keywords": [
+    "yapi",
+    "doc",
+    "api"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
