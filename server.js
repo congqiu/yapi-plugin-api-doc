@@ -1,5 +1,6 @@
 const projectDocController = require('./controllers/project');
 const groupDocController = require('./controllers/group');
+const interfaceDocController = require('./controllers/interface');
 
 module.exports = function() {
   this.bindHook('add_router', function(addRouter) {
@@ -83,6 +84,15 @@ module.exports = function() {
       method: 'post',
       path: 'fine/document/group/up_index',
       action: 'upIndex'
+    });
+
+    // 搜索接口名称或path
+    addRouter({
+      controller: interfaceDocController,
+      prefix: "/public",
+      method: 'post',
+      path: 'fine/document/search',
+      action: 'search'
     });
   });
 };

@@ -189,17 +189,25 @@ class projectDocController extends baseController {
     let params = ctx.request.body;
 
     try {
-
-      if ((await this.checkAuth(params.project_id, 'project', 'edit')) !== true) {
+      let projectId = params.project_id, isPublic = params.is_public;
+      if ((await this.checkAuth(projectId, 'project', 'edit')) !== true) {
         return (ctx.body = yapi.commons.resReturn(null, 406, '没有权限'));
       }
 
+      let username = this.getUsername(), uid = this.getUid();
       let data = {
-        project_id: params.project_id,
-        is_public: params.is_public,
-        uid: this.getUid()
+        project_id: projectId,
+        is_public: isPublic,
+        uid: uid
       };
-      let res = await this.settingModel.findOneAndUpdate(params.project_id, data);
+      yapi.commons.saveLog({
+        content: `<a href="/user/profile/${uid}">${username}</a> 将接口文档设置为${isPublic ? "公开" : "不公开"}`,
+        type: 'project',
+        uid: uid,
+        username: username,
+        typeid: projectId
+      });
+      let res = await this.settingModel.findOneAndUpdate(projectId, data);
       ctx.body = yapi.commons.resReturn(res);
     } catch (e) {
       ctx.body = yapi.commons.resReturn(null, 401, e.message);

@@ -391,6 +391,7 @@ body > pre {
   top: 0;
   left: 0;
   right: 0;
+  height: 40px;
   background: #32363a;
 }
 .header-box .breadcrumb {
@@ -417,4 +418,7 @@ body > pre {
 }
 .header-box .breadcrumb span a:hover {
   color: #2395f1;
+}
+.ant-empty {
+  margin-top: 50px;
 }

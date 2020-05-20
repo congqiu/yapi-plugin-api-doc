@@ -45,6 +45,15 @@ class projectDocModel extends baseModel {
       .exec();
   }
 
+  listByStatus(open) {
+    return this.model
+      .find({
+        is_public: open
+      })
+      .sort({ _id: -1 })
+      .exec();
+  }
+
   find(id) {
     return this.model.findOne({ _id: id });
   }

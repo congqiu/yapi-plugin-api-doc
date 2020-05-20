@@ -233,7 +233,7 @@ function createSchemaTable(body) {
   </thead>`;
 
   template += `<tbody className="ant-table-tbody">${tableBody(dataSource, columns, 0)}
-               </tbody>
+                </tbody>
               </table>
             `;
 
@@ -326,11 +326,24 @@ function createClassMarkdown(curProject, list, isToc) {
   return mdTemplate;
 }
 
+function createListMarkdown(list, isToc) {
+  let mdTemplate = `\n## \n`;
+  const toc = `[TOC]\n\n`;
+  isToc && (mdTemplate += toc);
+  for (let i = 0; i < list.length; i++) {
+    //循环拼接 接口
+    // 接口内容
+    mdTemplate += createInterMarkdown("", list[i], isToc);
+  }
+  return mdTemplate;
+}
+
 let r = {
   createInterMarkdown,
   createGroupMarkdown,
   createProjectMarkdown,
-  createClassMarkdown
+  createClassMarkdown,
+  createListMarkdown
 };
 
 module.exports = r;

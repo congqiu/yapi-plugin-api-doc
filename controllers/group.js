@@ -59,6 +59,7 @@ class homeController extends baseController {
 				}
 				htmlBody += `</div></div>`;
 			}
+			
 			let html = `<!DOCTYPE html>
 				<html>
 				<head>
@@ -71,7 +72,41 @@ class homeController extends baseController {
 					${homeTheme}
 				</head>
 				<body class="fine-api-doc">
+					<div class="header-box m-header ant-layout-header">
+						<div class="content g-row">
+							<div class="breadcrumb-container">
+								<span class="ant-breadcrumb">在线接口文档</span>
+							</div>
+							<div class="user-toolbar">
+								<div class="toolbar-li item-search">
+									<form id="search-form" class="ant-form ant-form-horizontal" method="post" action="/api/public/plugin/fine/document/search">
+										<span class="ant-input-search ant-input-affix-wrapper" style="width: 200px;">
+											<input name="keyword" id="fine-api-search-input" placeholder="输入接口名称搜索" class="ant-input" type="text" value="" required>
+											<span class="ant-input-suffix">
+												<span role="img" id="fine-api-search-icon" aria-label="search" class="anticon anticon-search srch-icon">
+												</span>
+											</span>
+										</span>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
 					${htmlBody || "<h3 style='text-align:center; margin: 50px 0;'>你走错地方啦，这里什么都没有</h3>"}
+					<script>
+						document.getElementById("fine-api-search-icon").addEventListener('click', function(){
+							if (document.getElementById("fine-api-search-input").value.trim() === "") {
+								return false;
+							}
+							document.getElementById("search-form").submit();
+						});
+						document.getElementById("search-form").addEventListener('submit', function(event){
+							if (document.getElementById("fine-api-search-input").value.trim() === "") {
+								event.preventDefault();
+								return false;
+							}
+						});
+					</script>
 				</body>
 				</html>
 			`;
