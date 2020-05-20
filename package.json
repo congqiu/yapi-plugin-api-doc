@@ -21,5 +21,8 @@
   "bugs": {
     "url": "https://github.com/congqiu/yapi-plugin-api-doc/issues"
   },
-  "homepage": "https://github.com/congqiu/yapi-plugin-api-doc#readme"
+  "homepage": "https://github.com/congqiu/yapi-plugin-api-doc#readme",
+  "publishConfig": {
+    "registry": " https://registry.npmjs.org/"
+  }
 }
