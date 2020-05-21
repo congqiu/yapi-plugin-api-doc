@@ -79,7 +79,7 @@ class projectDocController extends baseController {
       curProject = await this.projectModel.get(pid);
 
       try {
-        const wikiModel = require('../../yapi-plugin-wiki/wikiModel.js');
+        const wikiModel = require(yapi.path.join(yapi.WEBROOT, '/exts/yapi-plugin-wiki/wikiModel.js'));
         wikiData = await yapi.getInst(wikiModel).get(pid);
       } catch (error) {
       }

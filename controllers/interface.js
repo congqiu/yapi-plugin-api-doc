@@ -2,7 +2,7 @@
  * @Author: qiucong
  * @Date: 2020-05-19 10:02:27
  * @LastEditors: qiucong
- * @LastEditTime: 2020-05-20 17:28:09
+ * @LastEditTime: 2020-05-21 13:54:57
  */ 
 const baseController = require('controllers/base.js');
 const interfaceModel = require('models/interface.js');
@@ -116,6 +116,7 @@ class interfaceDocController extends baseController {
       let mdTemplate = ``;
       try {
         // 分类信息
+        // todo 这种创建的接口没有project的basepath，需要修复
         mdTemplate += md.createListMarkdown(list, isToc);
         return mdTemplate;
       } catch (e) {
